@@ -5,7 +5,7 @@ import numpy as np
 from random import randrange
 
 root = Tk()
-root.title("Face Detector")
+root.title("Car Detector")
 root.geometry("1350x700+0+0")
 
 def open():
@@ -15,7 +15,7 @@ def open():
 		button1 = Button(root,text="Browse a file",command=imagebutton)
 		button1.pack()
 	if var.get() == "Video":
-		button2 = Button(root, text='start' command=videobutton)
+		button2 = Button(root, text='Browse a file' command=videobutton)
 		button2.pack()
 	if var.get() == "Webcam":
 		button3 = Button(root,text='Start',command=webacambutton)
@@ -29,19 +29,21 @@ def imagebutton():
 	cars = trained_face_data.detectMultiScale(grayscaled_img)
 	for (x,y,w,h) in cars:
 		cv2.rectangle(img, (x,y),(x+w, y+h),(randrange(256),randrange(256),randrange(256)),2)
-	cv2.imshow('Face Detector',img)
+	cv2.imshow('Car Detector',img)
 	cv2.waitKey()
 
 def videobutton():
+	videofile = filedialog.askopenfilenames(initialdir='/',title='Select A File',filetypes=[("all video format", ".mp4"),("all video format", ".flv"),("all video format", ".avi")])
+	video = cv2.VideoCapture(videofile)
+	video = cv2.VideoCapture('car.mp4') # use this if browsing video  does not work for you
 	trained_face_data = cv2.CascadeClassifier('car_detection.xml')
-	video = cv2.VideoCapture('car.mp4')
 	while True:
 		successful_frame_read, frame = video.read()
-		grayscaled_img = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
-		cars = trained_face_data.detectMultiScale(grayscaled_img)
+		grayscaled_vid = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+		cars = trained_face_data.detectMultiScale(grayscaled_vid)
 		for (x,y,w,h) in cars:
 			cv2.rectangle(frame,(x,y),(x+w, y+h),(randrange(256),randrange(256),randrange(256)),2)
-		cv2.imshow("Face Detector",frame)
+		cv2.imshow("Car Detector",frame)
 		cv2.waitKey()
 
 def webacambutton():
@@ -49,11 +51,11 @@ def webacambutton():
 	webcam = cv2.VideoCapture(0)
 	while True:
 		successful_frame_read, frame = webcam.read()
-		grayscaled_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-		cars = trained_face_data.detectMultiScale(grayscaled_img)
+		grayscaled_web = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+		cars = trained_face_data.detectMultiScale(grayscaled_web)
 		for (x,y,w,h) in cars:
 			cv2.rectangle(frame,(x,y),(x+w, y+h),(randrange(256),randrange(256),randrange(256)),2)
-		cv2.imshow('Face Detector',frame)
+		cv2.imshow('Car Detector',frame)
 		key = cv2.waitKey(1)
 		if key==81 or key==113:
 			break
