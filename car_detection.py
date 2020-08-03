@@ -26,8 +26,8 @@ def imagebutton():
 	trained_face_data = cv2.CascadeClassifier('car_detection.xml')
 	img = cv2.imread(imagefile)
 	grayscaled_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-	face_coordinates = trained_face_data.detectMultiScale(grayscaled_img)
-	for (x,y,w,h) in face_coordinates:
+	cars = trained_face_data.detectMultiScale(grayscaled_img)
+	for (x,y,w,h) in cars:
 		cv2.rectangle(img, (x,y),(x+w, y+h),(randrange(256),randrange(256),randrange(256)),2)
 	cv2.imshow('Face Detector',img)
 	cv2.waitKey()
@@ -38,8 +38,8 @@ def videobutton():
 	while True:
 		successful_frame_read, frame = video.read()
 		grayscaled_img = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
-		face_coordinates = trained_face_data.detectMultiScale(grayscaled_img)
-		for (x,y,w,h) in face_coordinates:
+		cars = trained_face_data.detectMultiScale(grayscaled_img)
+		for (x,y,w,h) in cars:
 			cv2.rectangle(frame,(x,y),(x+w, y+h),(randrange(256),randrange(256),randrange(256)),2)
 		cv2.imshow("Face Detector",frame)
 		cv2.waitKey()
@@ -50,8 +50,8 @@ def webacambutton():
 	while True:
 		successful_frame_read, frame = webcam.read()
 		grayscaled_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-		face_coordinates = trained_face_data.detectMultiScale(grayscaled_img)
-		for (x,y,w,h) in face_coordinates:
+		cars = trained_face_data.detectMultiScale(grayscaled_img)
+		for (x,y,w,h) in cars:
 			cv2.rectangle(frame,(x,y),(x+w, y+h),(randrange(256),randrange(256),randrange(256)),2)
 		cv2.imshow('Face Detector',frame)
 		key = cv2.waitKey(1)
